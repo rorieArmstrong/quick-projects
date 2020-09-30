@@ -48,8 +48,7 @@
         context.fillStyle="lime";
         for(var i=0; i < trail.length; i++){
             context.fillRect(trail[i].x*gridSize, trail[i].y*gridSize, gridSize-2, gridSize-2);
-            console.log((trail[i].x * gridSize),xPosition)
-            if (trail[i].x  == xPosition && trail.y == yPosition){
+            if (trail[i].x  == xPosition && trail[i].y == yPosition){
                 console.log('hit')
                 tail = 5;
             }
