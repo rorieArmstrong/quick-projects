@@ -48,7 +48,9 @@
         context.fillStyle="lime";
         for(var i=0; i < trail.length; i++){
             context.fillRect(trail[i].x*gridSize, trail[i].y*gridSize, gridSize-2, gridSize-2);
-            if ((trail[i].x * gridSize) == xPosition && (trail.y * gridSize) == yPosition){
+            console.log((trail[i].x * gridSize),xPosition)
+            if (trail[i].x  == xPosition && trail.y == yPosition){
+                console.log('hit')
                 tail = 5;
             }
         };
@@ -64,8 +66,8 @@
 
         if (xApple == xPosition && yApple == yPosition){
             tail ++
-            xApple == Math.floor(Math.random()*gridSize);
-            yApple == Math.floor(Math.random()*gridSize);
+            xApple = Math.floor(Math.random()*gridSize);
+            yApple = Math.floor(Math.random()*gridSize);
         };
 
         context.fillStyle='red'
