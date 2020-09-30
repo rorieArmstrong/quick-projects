@@ -1,0 +1,95 @@
+<canvas 
+        id='gameWindow' 
+        width='400'
+        height='400'>
+</canvas>
+<script>
+    window.onload = function() {
+        canvas = document.getElementById('gameWindow');
+        context = canvas.getContext('2d');
+        document.addEventListener("keydown",keyPush);
+        setInterval(game,1000/15);
+    }
+
+    xVelocity = 0;
+    yVelocity = 0;
+
+    xPosition = 10;
+    yPosition = 10;
+
+    gridSize = 20;
+
+    trail = []
+    tail = 5
+
+    xApple = 15;
+    yApple = 15;
+
+    function game() {
+        xPosition += xVelocity;
+        yPosition += yVelocity;
+
+        if (xPosition < 0){
+            xPosition = gridSize-1
+        }
+        if (yPosition < 0 ){
+            yPosition = gridSize-1
+        }
+        if (xPosition == gridSize){
+            xPosition = 0
+        }
+        if (yPosition == gridSize ){
+            yPosition = 0
+        }
+
+        context.fillStyle='black';
+        context.fillRect(0,0,canvas.width,canvas.height);
+
+        context.fillStyle="lime";
+        for(var i=0; i < trail.length; i++){
+            context.fillRect(trail[i].x*gridSize, trail[i].y*gridSize, gridSize-2, gridSize-2);
+            if ((trail[i].x * gridSize) == xPosition && (trail.y * gridSize) == yPosition){
+                tail = 5;
+            }
+        };
+
+        trail.push({
+            x:xPosition, 
+            y:yPosition
+        });
+
+        while(trail.length > tail) {
+            trail.shift();
+        };
+
+        if (xApple == xPosition && yApple == yPosition){
+            tail ++
+            xApple == Math.floor(Math.random()*gridSize);
+            yApple == Math.floor(Math.random()*gridSize);
+        };
+
+        context.fillStyle='red'
+        context.fillRect(xApple*gridSize, yApple*gridSize, gridSize-2,gridSize-2);
+    }
+
+    function keyPush(event) {
+        switch(event.keyCode){
+            case 37:
+                xVelocity = -1;
+                yVelocity = 0;
+                break;
+            case 38:
+                xVelocity = 0;
+                yVelocity = -1;
+                break;
+            case 39:
+                xVelocity = 1;
+                yVelocity = 0;
+                break;
+            case 40:
+                xVelocity = 0;
+                yVelocity = 1;
+                break;
+        }
+    }
+</script>
