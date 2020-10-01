@@ -50,7 +50,7 @@
             context.fillRect(trail[i].x*gridSize, trail[i].y*gridSize, gridSize-2, gridSize-2);
             if (trail[i].x  == xPosition && trail[i].y == yPosition){
                 console.log('hit')
-                tail = 5;
+                tail = Math.max(5,i);
             }
         };
 
