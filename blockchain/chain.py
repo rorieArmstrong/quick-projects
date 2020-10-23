@@ -3,50 +3,47 @@ import time
 
 class Block:
 
-    def __init__(self, index, proof_no, prev_hash, data, timestamp=None):
-        self.index = index #this keeps track of the position of the block within the blockchain
-        self.proof_no = proof_no #this is the number produced during the creation of a new block (called mining)
-        self.prev_hash = prev_hash #this refers to the hash of the previous block within the chain
-        self.data = data #this gives a record of all transactions completed, such as the quantity bought
-        self.timestamp = timestamp or time.time()
+	def __init__(self, index, proof_no, prev_hash, data, timestamp=None):
+		self.index = index #this keeps track of the position of the block within the blockchain
+		self.proof_no = proof_no #this is the number produced during the creation of a new block (called mining)
+		self.prev_hash = prev_hash #this refers to the hash of the previous block within the chain
+		self.data = data #this gives a record of all transactions completed, such as the quantity bought
+		self.timestamp = timestamp or time.time()
 
-    @property
-    def calculate_hash(self):
-        block_of_string = "{}{}{}{}{}".format(self.index, self.proof_no,
-                                              self.prev_hash, self.data,
-                                              self.timestamp)
+	@property
+	def calculate_hash(self):
+		block_of_string = "{}{}{}{}{}".format(self.index, self.proof_no,
+											self.prev_hash, self.data,
+											self.timestamp)
 
-        return hashlib.sha256(block_of_string.encode()).hexdigest()
+		return hashlib.sha256(block_of_string.encode()).hexdigest()
 
-    def __repr__(self):
-        return "{} - {} - {} - {} - {}".format(self.index, self.proof_no,
-                                               self.prev_hash, self.data,
-                                               self.timestamp)
+	def __repr__(self):
+		return "{} - {} - {} - {} - {}".format(self.index, self.proof_no,
+											self.prev_hash, self.data,
+											self.timestamp)
 
 
 class BlockChain:
+	def __init__(self):
+		self.chain = [] #this variable keeps all blocks.
+		self.current_data = [] #his variable keeps all the completed transactions in the block.
+		self.nodes = set()
+		self.construct_genesis() #this method will take care of constructing the initial block.
 
-    def __init__(self):
-        self.chain = [] #this variable keeps all blocks.
-        self.current_data = [] #his variable keeps all the completed transactions in the block.
-        self.nodes = set()
-        self.construct_genesis() #this method will take care of constructing the initial block.
+	def construct_genesis(self):
+		self.construct_block(proof_no=0, prev_hash=0)
 
-    def construct_genesis(self):
-        self.construct_block(proof_no=0, prev_hash=0)
-
-
-    def construct_block(self, proof_no, prev_hash):
-        block = Block(
-            index=len(self.chain),
-            proof_no=proof_no,
-            prev_hash=prev_hash,
-            data=self.current_data)
-        self.current_data = []
-
-        self.chain.append(block)
-        return block
-
+	def construct_block(self, proof_no, prev_hash):
+		block = Block(
+		index=len(self.chain),
+			proof_no=proof_no,
+			prev_hash=prev_hash,
+			data=self.current_data)
+		self.current_data = []
+		self.chain.append(block)
+		return block
+	
 	@staticmethod
 	def check_validity(block, prev_block):
 		# checking validity of the new block
@@ -102,33 +99,33 @@ class BlockChain:
 	def block_mining(self, details_miner):
 	
 		self.new_data(
-            sender="0",  #it implies that this node has created a new block
-            receiver=details_miner,
-            quantity=
-            1,  #creating a new block (or identifying the proof number) is awarded with 1
-        )
+			sender="0",  #it implies that this node has created a new block
+			receiver=details_miner,
+			quantity=
+			1,  #creating a new block (or identifying the proof number) is awarded with 1
+			)
 
-        last_block = self.latest_block
+		last_block = self.latest_block
 
-        last_proof_no = last_block.proof_no
-        proof_no = self.proof_of_work(last_proof_no)
+		last_proof_no = last_block.proof_no
+		proof_no = self.proof_of_work(last_proof_no)
 
-        last_hash = last_block.calculate_hash
-        block = self.construct_block(proof_no, last_hash)
+		last_hash = last_block.calculate_hash
+		block = self.construct_block(proof_no, last_hash)
 
-        return vars(block)
+		return vars(block)
 
-    def create_node(self, address):
-        self.nodes.add(address)
-        return True
+	def create_node(self, address):
+		self.nodes.add(address)
+		return True
 
-    @staticmethod
-    def obtain_block_object(block_data):
-        #obtains block object from the block data
+	@staticmethod
+	def obtain_block_object(block_data):
+		#obtains block object from the block data
 
-        return Block(
-            block_data['index'],
-            block_data['proof_no'],
-            block_data['prev_hash'],
-            block_data['data'],
-            timestamp=block_data['timestamp'])
+		return Block(
+			block_data['index'],
+			block_data['proof_no'],
+			block_data['prev_hash'],
+			block_data['data'],
+			timestamp=block_data['timestamp'])
