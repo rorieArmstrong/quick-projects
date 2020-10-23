@@ -2,7 +2,7 @@ import chain
 
 blockchain = chain.BlockChain()
 
-print("***Mining fccCoin about to start***")
+print("***Mining about to start***")
 print(blockchain.chain)
 
 last_block = blockchain.latest_block
@@ -19,5 +19,5 @@ blockchain.new_data(
 last_hash = last_block.calculate_hash
 block = blockchain.construct_block(proof_no, last_hash)
 
-print("***Mining fccCoin has been successful***")
+print("***Mining has been successful***")
 print(blockchain.chain)
